@@ -9,6 +9,10 @@ const express         = require('express'),
 
 require('./../middleware/passport')(passport)
 
+router.get('/', function(request, response, next) {
+  response.json({ status: 'success', message: 'API', data:{ 'version_numbe': 'v1.0.0' }});
+});
+
 // Route /v1/users
 
 // Create user

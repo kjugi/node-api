@@ -50,7 +50,7 @@ app.use((request, response, next) => {
 // Routes
 app.use('/v1', v1);
 
-app.use('/', (response, request) => {
+app.use('/', (request, response) => {
   response.statusCode = 200;
   response.json({
     status: 'success',
@@ -60,7 +60,7 @@ app.use('/', (response, request) => {
 });
 
 // If error
-app.use((response, request, next) => {
+app.use((request, response, next) => {
   const error = new Error('Not Found');
 
   error.status = 404;

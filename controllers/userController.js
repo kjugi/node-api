@@ -1,4 +1,4 @@
-const user = require('../models').user,
+const user        = require('../models').user,
       authService = require('./../services/AuthService');
 
 const create = async (request, response) => {
@@ -73,7 +73,7 @@ const login = async (request, response) => {
   [error, user] = await to(authService.authUser(request.body));
 
   if (error) {
-    return ReE(response, error, 402);
+    return ReE(response, error, 422);
   }
   return ReS(response, { token: user.getJWT(), user: user.toWeb() });
 }

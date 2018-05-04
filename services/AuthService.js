@@ -1,4 +1,4 @@
-const user = require('./../models').user,
+const user      = require('./../models').user,
       validator = require('validator');
 
 const getUniqueKeyFromBody = (body) => {
