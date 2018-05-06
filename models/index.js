@@ -2,7 +2,7 @@
 
 const fs        = require('fs'),
       path      = require('path'),
-      Sequalize = require('sequelize'),
+      Sequelize = require('sequelize'),
       basename  = path.basename(__filename),
       db        = {};
 

@@ -6,7 +6,11 @@ const bcrypt  = require('bcrypt'),
 
 module.exports = (sequelize, DataTypes) => {
   const Model = sequelize.define('User', {
-    id     : { type: DataTypes.STRING, unique: true },
+    id     : {
+      type: DataTypes.STRING,
+      unique: true,
+      primaryKey: true
+    },
     nick   : DataTypes.STRING,
     stadium: DataTypes.STRING,
     tribune: DataTypes.STRING,
@@ -17,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     time   : DataTypes.DATE
   });
 
-  Model.associate = (models) => {
+  Model.associate = function(models) {
     this.Photos = this.belongsToMany(models.Photo, { through: 'UserPhoto' });
   };
 

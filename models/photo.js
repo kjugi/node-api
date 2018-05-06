@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     stadium: DataTypes.STRING
   });
 
-  Model.associate = (models) => {
+  Model.associate = function(models) {
     this.Users = this.belongsToMany(models.User, { through: 'UserPhoto' });
   };
 

@@ -1,4 +1,4 @@
-const photo = require('../modles').photo;
+const photo = require('../models').photo;
 
 let photos = async (request, response, next) => {
   let photoId, error, photoLink;
