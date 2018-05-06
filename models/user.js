@@ -1,16 +1,9 @@
 'use strict';
 
-const bcrypt  = require('bcrypt'),
-      bcryptp = require('bcrypt-promise'),
-      jwt     = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define('User', {
-    id     : {
-      type: DataTypes.STRING,
-      unique: true,
-      primaryKey: true
-    },
+  var User = sequelize.define('User', {
     nick   : DataTypes.STRING,
     stadium: DataTypes.STRING,
     tribune: DataTypes.STRING,
@@ -19,22 +12,22 @@ module.exports = (sequelize, DataTypes) => {
     place  : DataTypes.STRING,
     match  : DataTypes.STRING,
     time   : DataTypes.DATE
-  });
+  }, {});
 
-  Model.associate = function(models) {
+  User.associate = function(models) {
     this.Photos = this.belongsToMany(models.Photo, { through: 'UserPhoto' });
   };
 
-  Model.prototype.getJWT = () => {
+  User.prototype.getJWT = () => {
     let expirationTime = parseInt(CONFIG.jwt_expiration);
 
-    return `Bearer ${jwt.sign({ user_id: this.id}, CONFIG.jwt_encryption, { expiresIn: expirationTime })}`;
+    return `Bearer ${jwt.sign({ user_id: this.id }, CONFIG.jwt_encryption, { expiresIn: expirationTime })}`;
   };
 
-  Model.prototype.toWeb = (pw) => {
+  User.prototype.toWeb = (pw) => {
     let json = this.toJSON();
     return json;
   }
 
-  return Model;
+  return User;
 };
