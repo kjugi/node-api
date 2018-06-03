@@ -14,3 +14,5 @@ CONFIG.db_password    = process.env.DB_PASSWORD || 'root';
 
 CONFIG.jwt_encryption = process.env.JWT_ENCRYPTION || 'HS256';
 CONFIG.jwt_expiration = process.env.JWT_EXPIRATION || '1000';
+
+module.exports = CONFIG;

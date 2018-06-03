@@ -21,7 +21,7 @@ models.sequelize.authenticate().then(() => {
   console.log('Connected to MySQL');
 })
   .catch((error) => {
-    console.log('Unable to connect MySQL', err);
+    console.log('Unable to connect MySQL', error);
   });
 
 if (CONFIG.app === 'development') {
@@ -71,7 +71,7 @@ app.use((request, response, next) => {
 app.use((error, request, response, next) => {
   // Set locals, Provide error
   response.locals.message = error.message;
-  response.locals.error = (request.app.get('env') === 'development') ? err : {};
+  response.locals.error = (request.app.get('env') === 'development') ? error : {};
 
   // Render the error page
   response.status(error.status || 500);
