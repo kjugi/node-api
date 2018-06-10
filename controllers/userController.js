@@ -1,4 +1,5 @@
 const user        = require('../models').user,
+      db          = require('../models'),
       authService = require('./../services/AuthService');
 
 const create = async (request, response) => {
@@ -32,6 +33,16 @@ const get = async (request, response) => {
   return ReS(response, { user: user.toWeb() });
 }
 module.exports.get = get;
+
+const getAll = async (request, response) => {
+  response.setHeader('Content-Type', 'application/json');
+
+  var users = db.sequelize.query("SELECT * FROM Users").then(result => {
+    response.send(result);
+    // return ReS(response, { userList: result.toWeb() });
+  });
+}
+module.exports.getAll = getAll;
 
 const update = async (request, response) => {
   let error, user, data;

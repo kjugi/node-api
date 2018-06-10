@@ -16,7 +16,7 @@ router.get('/', function(request, response, next) {
 router.post('/users', userController.create);
 
 // Get all users
-// router.get('/users', passport.authenticate('jwt', { session: false }), userController.getAll);
+router.get('/users', userController.getAll);
 
 // Get one user
 router.get('/users/:user_id', passport.authenticate('jwt', { session: false }), userController.get);
