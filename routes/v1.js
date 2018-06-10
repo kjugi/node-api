@@ -6,9 +6,6 @@ const express         = require('express'),
       userController  = require('./../controllers/userController'),
       photoController = require('./../controllers/photoController');
 
-
-require('./../middleware/passport')(passport)
-
 router.get('/', function(request, response, next) {
   response.json({ status: 'success', message: 'API', data:{ 'version_numbe': 'v1.0.0' }});
 });
