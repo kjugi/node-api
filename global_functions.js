@@ -21,15 +21,21 @@ TE = (error_message, log) => {
 
 // Error web response
 ReE = (response, error, code) => {
-  if (typeof error == 'object' && typeof err.message != 'undefined') {
-    error = error.message;
+  const returnedErroObj = {
+    url: response.req.originalUrl,
+    method: response.req.method,
+    success: false
+  };
+
+  if (typeof error == 'object' && typeof error.message != 'undefined') {
+    returnedErroObj.message = error.message;
   }
 
   if (typeof code !== 'undefined') {
-    response.statusCode = code;
+    returnedErroObj.code = code;
   }
 
-  return response.json({ success: false, error: error });
+  return response.json(returnedErroObj);
 }
 
 // Success web response
@@ -41,7 +47,7 @@ ReS = (response, data, code) => {
   }
 
   if (typeof code !== 'undefined') {
-    sendData = Object.assign(sendData, { code: code });
+    sendData.code = code;
   }
 
   return response.json(sendData);

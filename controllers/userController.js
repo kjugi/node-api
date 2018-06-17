@@ -10,6 +10,7 @@ const create = async (request, response) => {
     return ReE(response, 'You don\'t provide necessary data to create a user!');
   }
   else {
+    // use here db.User.findOrCreate()
     let error, user;
 
     [error, user] = await to(authService.createUser(body));
@@ -41,17 +42,12 @@ module.exports.get = get;
 const getAll = async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
 
-  var users = db.sequelize
-    .query(
-      'SELECT * FROM Users',
-      { type: db.Sequelize.QueryTypes.SELECT }
-    )
-    .then(result => {
-      return ReS(response, { users: result }, 200);
-    })
-    .catch(error => {
-      return ReE(response, error, 400);
-    });
+  db.User.findAll().then(result => {
+    return ReS(response, { users: result }, 200);
+  })
+  .catch(error => {
+    return ReE(response, error, 400);
+  });
 }
 module.exports.getAll = getAll;
 
