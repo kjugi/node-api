@@ -19,7 +19,7 @@ router.post('/users', userController.create);
 router.get('/users', userController.getAll);
 
 // Get one user
-router.get('/users/:user_id', passport.authenticate('jwt', { session: false }), userController.get);
+router.get('/users/:user_id', userController.get);
 
 // Update user
 router.put('/users/:user_id', passport.authenticate('jwt', { session: false }), userController.update);

@@ -25,7 +25,9 @@ ReE = (response, error, code) => {
     error = error.message;
   }
 
-  if (typeof code !== 'undefined') response.statusCode = code;
+  if (typeof code !== 'undefined') {
+    response.statusCode = code;
+  }
 
   return response.json({ success: false, error: error });
 }
@@ -39,7 +41,7 @@ ReS = (response, data, code) => {
   }
 
   if (typeof code !== 'undefined') {
-    response.statusCode = code;
+    sendData = Object.assign(sendData, { code: code });
   }
 
   return response.json(sendData);

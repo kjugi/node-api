@@ -1,5 +1,4 @@
-const user        = require('../models').user,
-      db          = require('../models'),
+const db          = require('../models'),
       authService = require('./../services/AuthService');
 
 const create = async (request, response) => {
@@ -28,19 +27,31 @@ module.exports.create = create;
 const get = async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
 
-  let user = request.user;
-
-  return ReS(response, { user: user.toWeb() });
+  if (request.params.user_id) {
+    db.User.findById(request.params.user_id).then(result => {
+      return ReS(response, result.dataValues, 200);
+    });
+  }
+  else {
+    return ReE(response, 'Provide required params', 400);
+  }
 }
 module.exports.get = get;
 
 const getAll = async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
 
-  var users = db.sequelize.query("SELECT * FROM Users").then(result => {
-    response.send(result);
-    // return ReS(response, { userList: result.toWeb() });
-  });
+  var users = db.sequelize
+    .query(
+      'SELECT * FROM Users',
+      { type: db.Sequelize.QueryTypes.SELECT }
+    )
+    .then(result => {
+      return ReS(response, { users: result }, 200);
+    })
+    .catch(error => {
+      return ReE(response, error, 400);
+    });
 }
 module.exports.getAll = getAll;
 
