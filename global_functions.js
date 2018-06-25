@@ -31,6 +31,10 @@ ReE = (response, error, code) => {
     returnedErroObj.message = error.message;
   }
 
+  if (typeof error == 'string') {
+    returnedErroObj.message = error;
+  }
+
   if (typeof code !== 'undefined') {
     returnedErroObj.code = code;
   }

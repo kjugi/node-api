@@ -6,21 +6,42 @@ const create = async (request, response) => {
 
   const body = request.body;
 
-  if (!body.id && !body.nick && !body.stadium && !body.tribune && !body.sector && !body.row && !body.place) {
-    return ReE(response, 'You don\'t provide necessary data to create a user!');
+  if (!body.id
+      && (!body.nick
+      || !body.stadium
+      || !body.tribune
+      || !body.sector
+      || !body.row
+      || !body.place)
+  ) {
+    return ReE(response, 'You don\'t provide necessary data to create a user!', 400);
   }
   else {
-    // use here db.User.findOrCreate()
-    let error, user;
-
-    [error, user] = await to(authService.createUser(body));
-
-    if (error) {
-      return ReE(response, request, 422);
-    }
-    else {
-      return ReS(response, { message: 'User created', user: user.toWeb(), token: user.getJWT()}, 201);
-    }
+    // Create or return user
+    db.User.findOrCreate({
+      where: {
+        nick: body.nick
+      },
+      defaults: {
+        stadium: body.stadium,
+        tribune: body.tribune,
+        sector: body.sector,
+        row: body.row,
+        place: body.place
+      }
+    })
+      .spread(function(user, created) {
+        if (created) {
+          return ReS(
+            response,
+            { message: 'User created', user: user.get() },
+            201
+          );
+        }
+        else {
+          return ReE(response, 'User already exist!', 400);
+        }
+      });
   }
 }
 module.exports.create = create;
