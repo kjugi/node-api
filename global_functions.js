@@ -11,12 +11,14 @@ to = (promise) => {
 pe = require('parse-error');
 
 // Throw error
-TE = (error_message, log) => {
-  if (log === true) {
-    console.log(error_message);
+TE = (error_message) => {
+  try {
+    throw new Error(error_message);
   }
-
-  throw new Error(error_message);
+  catch (e) {
+    console.log(e.name);
+    console.log(e.message);
+  }
 }
 
 // Error web response
