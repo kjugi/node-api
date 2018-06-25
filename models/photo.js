@@ -5,8 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     userID    : DataTypes.INTEGER,
     photoLink : DataTypes.STRING,
     stadium   : DataTypes.STRING,
-    match     : DataTypes.STRING,
-    dateCreate: DataTypes.DATE
+    match     : DataTypes.STRING
   }, {});
 
   Photo.associate = function(models) {

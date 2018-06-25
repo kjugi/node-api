@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     sector : DataTypes.STRING,
     row    : DataTypes.STRING,
     place  : DataTypes.STRING,
-    match  : DataTypes.STRING,
-    time   : DataTypes.DATE
+    match  : DataTypes.STRING
   }, {});
 
   User.associate = function(models) {
