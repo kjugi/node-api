@@ -20,7 +20,9 @@ const create = async (request, response) => {
     // Create or return user
     db.User.findOrCreate({
       where: {
-        nick: body.nick
+        nick: {
+          $eq: body.nick
+        }
       },
       defaults: {
         stadium: body.stadium,
