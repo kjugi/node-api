@@ -20,9 +20,6 @@ module.exports = {
       match: {
         type: Sequelize.STRING
       },
-      dateCreate: {
-        type: Sequelize.DATE
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
