@@ -5,20 +5,23 @@
     "database": "picofu",
     "host": "127.0.0.1",
     "port": "3306",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "webPort": "3000"
   },
   "test": {
     "username": "root",
     "password": "test",
     "database": "picofu_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "webPort": "3000"
   },
   "production": {
     "username": "root",
     "password": "test",
     "database": "picofu_prod",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "webPort": "3000"
   }
 }
