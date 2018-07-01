@@ -77,22 +77,32 @@ const getAll = async (request, response) => {
 module.exports.getAll = getAll;
 
 const update = async (request, response) => {
-  let error, user, data;
+  // Use update from sequelize + send to user update and check is updated value
+  // is not nick + return error when nick already existing
+  response.setHeader('Content-Type', 'application/json');
 
-  user = request.user;
-  data = request.body;
-  user.set(data);
+  const updateObject = request.body;
 
-  [error, user] = await to(user.save());
-
-  if (error) {
-    if (error.message === 'Validation error') {
-      error = 'Nick is already in use';
-    }
-
-    return ReE(response, error);
+  if (request.params.user_id) {
+    db.User.update({
+      updateObject,
+      where: {
+        id: request.params.user_id,
+        $and: [
+          {
+            nick: { $ne: updateObject.nick }
+          }
+        ]
+      }
+    })
+      .then(response => {
+        console.log(response);
+        // return ReS(response, { message: 'User updated', user:  } ,200);
+      })
+      .catch(() => {
+        return ReE(response, 'Error with update user', 400);
+      });
   }
-  return ReS(response, { message: `Update User: ${user.nick}`});
 }
 module.exports.update = update;
 
