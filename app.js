@@ -1,7 +1,7 @@
-require('./config/config'); // Main config
 require('./global_functions'); // Necessary functions
 
-const express    = require('express'),
+const env        = process.env.NODE_ENV || 'development',
+      express    = require('express'),
       app        = express(),
       bodyParser = require('body-parser'),
       logger     = require('morgan'),
@@ -25,7 +25,7 @@ models.sequelize.authenticate().then(() => {
     console.log('Unable to connect MySQL', error);
   });
 
-if (CONFIG.app === 'development') {
+if (env === 'development') {
   models.sequelize.sync(); // create tables fom models
   //models.sequelize.sync({ force: true }); -> for tests
 }

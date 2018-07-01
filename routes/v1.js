@@ -1,8 +1,6 @@
 const express         = require('express'),
       router          = express.Router(),
-      custom          = require('./../middleware/custom'),
       passport        = require('passport'),
-      path            = require('path'),
       userController  = require('./../controllers/userController'),
       photoController = require('./../controllers/photoController');
 
