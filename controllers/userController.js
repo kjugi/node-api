@@ -20,9 +20,7 @@ const create = async (request, response) => {
     // Create or return user
     db.User.findOrCreate({
       where: {
-        nick: {
-          $eq: body.nick
-        }
+        nick: body.nick
       },
       defaults: {
         stadium: body.stadium,
@@ -52,9 +50,13 @@ const get = async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
 
   if (request.params.user_id) {
-    db.User.findById(request.params.user_id).then(result => {
-      return ReS(response, result.dataValues, 200);
-    });
+    db.User.findById(request.params.user_id)
+      .then(result => {
+        return ReS(response, result.dataValues, 200);
+      })
+      .catch(() => {
+        return ReE(response, 'User with provided ID not found', 404);
+      });
   }
   else {
     return ReE(response, 'Provide required params', 400);
