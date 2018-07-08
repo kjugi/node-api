@@ -1,4 +1,5 @@
-const photo = require('../models').photo;
+const db          = require('../models'),
+      authService = require('./../services/AuthService');
 
 const create = async (request, response) => {
   response.setHeader('Content-Type', 'application/json');
