@@ -1,31 +1,36 @@
-'use strict';
+/* jshint indent: 2 */
 
-const jwt = require('jsonwebtoken');
-
-module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    nick   : DataTypes.STRING,
-    stadium: DataTypes.STRING,
-    tribune: DataTypes.STRING,
-    sector : DataTypes.STRING,
-    row    : DataTypes.STRING,
-    place  : DataTypes.STRING,
-    match  : DataTypes.STRING
-  }, {});
-
-  User.associate = function(models) {
-    this.Photos = this.belongsToMany(models.Photo, { through: 'UserPhoto' });
-  };
-
-  User.prototype.getJWT = () => {
-    let expirationTime = parseInt(CONFIG.jwt_expiration);
-
-    return `Bearer ${jwt.sign({ user_id: this.id }, CONFIG.jwt_encryption, { expiresIn: expirationTime })}`;
-  };
-
-  User.prototype.toWeb = (pw) => {
-    let json = this.toJSON();
-    return json;
-  }
-  return User;
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: ''
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: ''
+    },
+    passId: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    }
+  }, {
+    tableName: 'User'
+  });
 };
