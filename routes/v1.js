@@ -28,15 +28,15 @@ router.delete('/users/:user_id', userController.remove);
 // Route /v1/photo
 
 // Create photo
-router.post('/photo', passport.authenticate('jwt', { session: false }), photoController.create);
+router.post('/photo', photoController.create);
 
 // Get photo to specific user
-router.get('/photo/:user_id', passport.authenticate('jwt', { session: false }), photoController.get);
+router.get('/photo/:user_id', photoController.get);
 
 // Update photo
-router.put('/photo/:photo_id', passport.authenticate('jwt', { session: false }), photoController.update);
+router.put('/photo/:photo_id', photoController.update);
 
 // Delete photo
-router.delete('/photo:/photo_id', passport.authenticate('jwt', { session: false }), photoController.remove);
+router.delete('/photo:/photo_id', photoController.remove);
 
 module.exports = router;
