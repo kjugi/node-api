@@ -20,13 +20,10 @@ router.get('/users', userController.getAll);
 router.get('/users/:user_id', userController.get);
 
 // Update user
-router.put('/users/:user_id', passport.authenticate('jwt', { session: false }), userController.update);
+router.put('/users/:user_id', userController.update);
 
 // Delete user
-router.delete('/users/:user_id', passport.authenticate('jwt', { session: false }), userController.remove);
-
-//
-router.post('/users/login', userController.login);
+router.delete('/users/:user_id', userController.remove);
 
 // Route /v1/photo
 

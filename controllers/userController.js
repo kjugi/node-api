@@ -6,28 +6,18 @@ const create = async (request, response) => {
 
   const body = request.body;
 
-  if (!body.id
-      && (!body.nick
-      || !body.stadium
-      || !body.tribune
-      || !body.sector
-      || !body.row
-      || !body.place)
-  ) {
+  if (!body.id && (!body.email || !body.password)) {
     return ReE(response, 'You don\'t provide necessary data to create a user!', 400);
   }
   else {
     // Create or return user
     db.User.findOrCreate({
       where: {
-        nick: body.nick
+        email: body.email
       },
       defaults: {
-        stadium: body.stadium,
-        tribune: body.tribune,
-        sector: body.sector,
-        row: body.row,
-        place: body.place
+        password: body.password,
+        passId: (body.passId) ? body.passId : ''
       }
     })
       .spread(function(user, created) {
@@ -77,27 +67,36 @@ const getAll = async (request, response) => {
 module.exports.getAll = getAll;
 
 const update = async (request, response) => {
-  // Use update from sequelize + send to user update and check is updated value
-  // is not nick + return error when nick already existing
   response.setHeader('Content-Type', 'application/json');
 
   const updateObject = request.body;
 
   if (request.params.user_id) {
-    db.User.update({
+    const defaultValues = {};
+
+    Object.keys(updateObject).forEach(item => {
+      defaultValues[item] = {
+        $ne: updateObject[item]
+      }
+    });
+
+    db.User.update(
       updateObject,
+    {
       where: {
         id: request.params.user_id,
         $and: [
-          {
-            nick: { $ne: updateObject.nick }
-          }
+          defaultValues
         ]
       }
     })
-      .then(response => {
-        console.log(response);
-        // return ReS(response, { message: 'User updated', user:  } ,200);
+      .then(result => {
+        if (result[0]) {
+          return ReS(response, { message: 'User updated with below values', user: updateObject }, 200);
+        }
+        else {
+          return ReE(response, 'User can\'t be updated with the same values!', 400);
+        }
       })
       .catch(() => {
         return ReE(response, 'Error with update user', 400);
@@ -107,27 +106,46 @@ const update = async (request, response) => {
 module.exports.update = update;
 
 const remove = async (request, response) => {
-  let user, error;
+  response.setHeader('Content-Type', 'application/json');
 
-  [error, user] = await to(user.destroy());
+  const userId = request.params.user_id,
+        deleteStatus = {};
 
-  if (error) {
-    return ReE(response, 'Error when trying to delete user');
+  if (userId) {
+    db.User.destroy({
+      where: {
+        id: userId
+      }
+    })
+      .then(result => {
+        (result[0]) ? deleteStatus.user = true : deleteStatus.user = false;
+
+        db.Photos.destroy({
+          where: {
+            userID: userId
+          }
+        })
+          .then(result => {
+            (result[0]) ? deleteStatus.photos = true : deleteStatus.photos = false;
+
+            let message = '';
+            (deleteStatus.user) ? message += 'Deleted user from database. ' : '';
+            (deleteStatus.photos) ? message += 'Deleted all photos from database.' : '';
+
+            if (message.length !== 0) {
+              return ReS(response, { message: message }, 200);
+            }
+            else {
+              return ReE(response, 'User ID not fonud in database', 400);
+            }
+          })
+          .catch(() => {
+            return ReE(response, 'Error when trying to delete user photos', 400);
+          });
+      })
+      .catch(() => {
+        return ReE(response, 'Error when trying to delete user', 400);
+      });
   }
-
-  return ReS(response, { message: 'Deleted user' }, 204);
 }
 module.exports.remove = remove;
-
-const login = async (request, response) => {
-  const body = request.body;
-  let user, error;
-
-  [error, user] = await to(authService.authUser(request.body));
-
-  if (error) {
-    return ReE(response, error, 422);
-  }
-  return ReS(response, { token: user.getJWT(), user: user.toWeb() });
-}
-module.exports.login = login;
