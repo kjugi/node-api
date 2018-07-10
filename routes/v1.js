@@ -30,13 +30,14 @@ router.delete('/users/:user_id', userController.remove);
 // Create photo
 router.post('/photo', photoController.create);
 
-// Get photo to specific user
-router.get('/photo/:user_id', photoController.get);
+// Get one photo specified by Photo ID
+router.get('/photo/:user_id/:photo_id', photoController.get);
+// Get all photos specified by user ID
+router.get('/photo/:user_id', photoController.getAll);
 
-// Update photo
-router.put('/photo/:photo_id', photoController.update);
-
-// Delete photo
-router.delete('/photo:/photo_id', photoController.remove);
+// Delete photo with specified Photo ID
+router.delete('/photo/:user_id/:photo_id', photoController.remove);
+// Delete all photos from specified User
+router.delete('/photo/:user_id', photoController.removeAll);
 
 module.exports = router;
