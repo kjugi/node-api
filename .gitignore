@@ -1,2 +1,8 @@
+# Deps
 node_modules/*
-node_rest_api_mysql-master/*
+
+# Core files
+Procfile
+config/config.json
+.DS_Store
+.env
