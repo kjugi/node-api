@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "main": "app.js",
   "author": "Filip Kudła",
+  "engines": {
+    "node": "9.5.0"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
